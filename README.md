@@ -163,6 +163,24 @@ so `--query "household_avoids(trey, ?a)"` arrives as two shell arguments — `--
 and `?a)`. The parser rejoins tokens that end mid-quote before reading them, so callers see
 whole strings whatever the shell did to them.
 
+## Tests
+
+```
+> miniscript.exe test/run.ms
+32 passed, 0 failed
+```
+
+The checks cover the defaults a bare command line gets, values in both spellings
+(`--depth 3` and `--depth=3`), repeatable `list` options, `--help`/`-h` and `--version`/`-v`,
+and each mistake the parser rejects: a value that is not a number, a missing value, an
+unknown option, a stray argument, and a value given to a flag. One case rejoins a quoted
+value that the shell split into pieces, and the last four check the generated help text - the
+command line, an option's placeholder and its default, and the built-in options.
+
+In this interpreter an uncaught runtime error still exits `0`, so the `N passed, M failed`
+line is the real signal, not the exit code. The runner exits non-zero on a failure it
+catches.
+
 ## License
 
 MIT — see [LICENSE](LICENSE). Copyright © 2026 Trey Tomes.
